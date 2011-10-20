@@ -14,13 +14,13 @@ def eden_media_listing(media_type):
     json_response = re.compile( "{(.*?)}", re.DOTALL ).findall(json_query)
     Medialist = []
     for mediaitem in json_response:
-        findmedianame = re.search( '"label":"(.*?)","', mediaitem )
+        findmedianame = re.search( '"label" ?: ?"(.*?)","', mediaitem )
         if findmedianame:
             medianame = ( findmedianame.group(1) )
-            findpath = re.search( '"file":"(.*?)","', mediaitem )
+            findpath = re.search( '"file" ?: ?"(.*?)","', mediaitem )
             if findpath:
                 path = (findpath.group(1))
-                findimdbnumber = re.search( '"imdbnumber":"(.*?)","', mediaitem )
+                findimdbnumber = re.search( '"imdbnumber" ?: ?"(.*?)","', mediaitem )
                 if findimdbnumber:
                     imdbnumber = (findimdbnumber.group(1))
                     Media = {}
