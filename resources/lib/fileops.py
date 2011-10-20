@@ -38,7 +38,7 @@ class fileops:
             self._delete = lambda path: xbmcvfs.delete(path)
 
         self.downloadcount = 0
-        addondir = xbmc.translatePath('special://profile/addon_data/%s' % utils.__addonid__)
+        addondir = xbmc.translatePath( utils.__addon__.getAddonInfo('profile') )
         self.tempdir = os.path.join(addondir, 'temp')
         if not self._exists(self.tempdir):
             if not self._exists(addondir):
