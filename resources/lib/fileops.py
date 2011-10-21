@@ -92,27 +92,35 @@ class fileops:
             else:
                 return True
         def _mkdir( self, path ):
-            log( "Building Directory", xbmc.LOGDEBUG )
-            if path.startswith( "smb://" ) and not os.environ.get( "OS", "win32" ) in ("win32", "Windows_NT"):
-                self._smb_mkdir( path )
-                return True
-            if ( path.startswith( "smb://" ) and os.environ.get( "OS", "win32" ) in ("win32", "Windows_NT") ):
-                log( "Building Samba Share Directory on Windows System", xbmc.LOGDEBUG )
-                if "@" in path:
-                    path = "\\\\" + path.split("@")[1]
-                path = path.replace( "/", "\\" ).replace( "smb:", "" )
-            # no need to create folders
-            if ( os.path.isdir( path ) ): return True
-            # temp path
-            tmppath = path
-            # loop thru and create each folder
-            while ( not os.path.isdir( tmppath ) ):
-                try:
-                    os.mkdir( tmppath )
-                except:
-                    tmppath = os.path.dirname( tmppath )
-            # call function until path exists
-            self._mkdir( path )
+            try:
+               os.mkdir(path)
+            except:
+                if os.path.exists(path):
+                    return True
+                else:
+                    log( "Building Directory", xbmc.LOGDEBUG )
+                    if path.startswith( "smb://" ) and not os.environ.get( "OS", "win32" ) in ("win32", "Windows_NT"):
+                        self._smb_mkdir( path )
+                        return True
+                    if ( path.startswith( "smb://" ) and os.environ.get( "OS", "win32" ) in ("win32", "Windows_NT") ):
+                        log( "Building Samba Share Directory on Windows System", xbmc.LOGDEBUG )
+                        if "@" in path:
+                            path = "\\\\" + path.split("@")[1]
+                        path = path.replace( "/", "\\" ).replace( "smb:", "" )
+                    # no need to create folders
+                    if ( os.path.isdir( path ) ): return True
+                    # temp path
+                    tmppath = path
+                    # loop thru and create each folder
+                    while ( not os.path.isdir( tmppath ) ):
+                        try:
+                            os.mkdir( tmppath )
+                        except:
+                            tmppath = os.path.dirname( tmppath )
+                    # call function until path exists
+                    self._mkdir( path )
+            else:
+                return True 
 
         def _smb_mkdir( self, path ):
             log( "Building Samba Directory on Non Windows System", xbmc.LOGDEBUG )
