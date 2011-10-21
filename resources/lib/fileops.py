@@ -119,6 +119,9 @@ class fileops:
                             tmppath = os.path.dirname( tmppath )
                     # call function until path exists
                     self._mkdir( path )
+                    if os.path.exists(path):
+                        log('Succesfully created folder on Samba Share Directory')
+                        return True
             else:
                 return True 
 
