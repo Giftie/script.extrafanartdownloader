@@ -11,7 +11,7 @@ if xbmc_version == 'Eden':
     import xbmcvfs
 else:
     import shutil
-    from resources.lib.smbclient.smbclient import smbclient
+    from resources.lib.smbclient import smbclient
 
 log = utils._log
 
@@ -67,16 +67,16 @@ class fileops:
                     return False
             else:
                 return True
-        def _mkdir(self, path):
-            try:
-                os.makedirs(path)
-            except:
-                if os.path.exists(path):
-                    return True
-                else:
-                    return False
-            else:
-                return True
+#        def _mkdir(self, path):
+#            try:
+#               os.mkdir(path)
+#            except:
+#                if os.path.exists(path):
+#                    return True
+#                else:
+#                    return False
+#            else:
+#                return True
         def _delete(self, path):
             try:
                 os.remove(path)
@@ -91,10 +91,10 @@ class fileops:
                 return False
             else:
                 return True
-        def _makedirs( self, path ):
+        def _mkdir( self, path ):
             log( "Building Directory", xbmc.LOGDEBUG )
             if path.startswith( "smb://" ) and not os.environ.get( "OS", "win32" ) in ("win32", "Windows_NT"):
-                self._smb_makedirs( path )
+                self._smb_mkdir( path )
                 return True
             if ( path.startswith( "smb://" ) and os.environ.get( "OS", "win32" ) in ("win32", "Windows_NT") ):
                 log( "Building Samba Share Directory on Windows System", xbmc.LOGDEBUG )
@@ -112,8 +112,9 @@ class fileops:
                 except:
                     tmppath = os.path.dirname( tmppath )
             # call function until path exists
-            self._makedirs( path )
-        def _smb_makedirs( self, path ):
+            self._mkdir( path )
+
+        def _smb_mkdir( self, path ):
             log( "Building Samba Directory on Non Windows System", xbmc.LOGDEBUG )
             if self._exists( path ):
                 return
@@ -155,9 +156,8 @@ class fileops:
                     tmppath = os.path.dirname( tmppath )
                     # need to strip the same part from a true path for the exists option
                     path2 = os.path.dirname( path2 )
-            self._smb_makedirs( path )
-            
-            
+            self._smb_mkdir( path )
+
     def _delete_file_in_dirs(self, filename, targetdirs, reason):
         """
         Delete file from all targetdirs
