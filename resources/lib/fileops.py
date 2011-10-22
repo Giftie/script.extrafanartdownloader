@@ -88,7 +88,7 @@ class fileops:
                 tmppath = path
                 # loop thru and create each folder
                 while ( not os.path.isdir( tmppath ) ):
-                    if tmppath == "\\": break
+                    if tmppath == "\\\\": break
                     try:
                         os.mkdir( tmppath )
                     except:
@@ -100,7 +100,7 @@ class fileops:
                     log('Succesfully created folder on Samba Share Directory')
                     return True
                 else:
-                    if tmppath == "\\":
+                    if tmppath == "\\\\":
                         return False
                     else:
                         self._mkdir( path )
