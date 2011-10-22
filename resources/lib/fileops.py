@@ -12,6 +12,7 @@ from resources.lib.smbclient import smbclient
 
 log = utils._log
 
+
 ### adjust default timeout to stop script hanging
 timeout = 20
 socket.setdefaulttimeout(timeout)
